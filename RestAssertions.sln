@@ -1,0 +1,46 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.28307.168
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RestAssertions", "RestAssertions\RestAssertions.csproj", "{CFC2F559-CE99-407F-AB94-2AFCB66C701F}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{31C4CB1D-253D-4350-BC93-E225883D977D}"
+	ProjectSection(SolutionItems) = preProject
+		.gitignore = .gitignore
+		DevOps-Build.yml = DevOps-Build.yml
+		LICENSE = LICENSE
+		README.md = README.md
+		StyleCop.ruleset = StyleCop.ruleset
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Examples", "Examples", "{5E810721-FBEA-4D59-80A8-B436C8351A6E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExampleWebApi.Tests", "Examples\ExampleWebApi.Tests\ExampleWebApi.Tests.csproj", "{40680843-B890-4495-BB17-844275C1E2BA}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{CFC2F559-CE99-407F-AB94-2AFCB66C701F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CFC2F559-CE99-407F-AB94-2AFCB66C701F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CFC2F559-CE99-407F-AB94-2AFCB66C701F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CFC2F559-CE99-407F-AB94-2AFCB66C701F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{40680843-B890-4495-BB17-844275C1E2BA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{40680843-B890-4495-BB17-844275C1E2BA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{40680843-B890-4495-BB17-844275C1E2BA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{40680843-B890-4495-BB17-844275C1E2BA}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{5E810721-FBEA-4D59-80A8-B436C8351A6E} = {31C4CB1D-253D-4350-BC93-E225883D977D}
+		{40680843-B890-4495-BB17-844275C1E2BA} = {5E810721-FBEA-4D59-80A8-B436C8351A6E}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {F6FECEFD-8785-43E1-8D01-FE45A260FFB4}
+	EndGlobalSection
+EndGlobal

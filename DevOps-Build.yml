@@ -1,0 +1,37 @@
+name: $(Build.DefinitionName)-$(date:yyyyMMdd)$(rev:.r)
+
+queue: 
+    name: 'Hosted VS2017'
+
+variables:
+    buildConfiguration: 'Release'
+    SolutionDir: '$(Build.SourcesDirectory)\'
+
+steps:
+  - task: DotNetCoreCLI@2
+    displayName: 'dotnet restore'
+    inputs:
+        command: restore
+        projects: '**/*.csproj'
+
+  - task: DotNetCoreCLI@2
+    displayName: 'dotnet test'
+    inputs:
+        command: test
+        projects: '**/*.Tests.csproj'
+
+  - task: DotNetCoreCLI@2
+    displayName: 'dotnet pack'
+    inputs:
+        command: pack
+        projects: '**/RestAssertions.csproj'
+        packDirectory: '$(Build.ArtifactStagingDirectory)/nuget/RestAssertions'
+
+  - task: NuGetCommand@2
+    displayName: 'NuGet push'
+    continueOnError: true
+    inputs:
+        command: push
+        packagesToPush: '$(Build.ArtifactStagingDirectory)/nuget/RestAssertions/*.nupkg'
+        nuGetFeedType: external
+        publishFeedCredentials: nuget.org
