@@ -8,6 +8,11 @@
 
     public static class HttpResponseExtensions
     {
+        static HttpResponseExtensions()
+        {
+            ShouldlyConfiguration.DisableSourceInErrors();
+        }
+
         public static async Task ShouldBe(this HttpResponseMessage httpResponseMessage, HttpStatusCode expectedStatusCode, object expectedContent, string customMessage = null)
         {
             var content = await httpResponseMessage.Content.ReadAsStringAsync();
