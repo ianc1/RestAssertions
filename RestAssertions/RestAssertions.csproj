@@ -13,8 +13,10 @@
     <IsPackable>true</IsPackable>
     <IncludeSymbols>true</IncludeSymbols>
     <IncludeSource>true</IncludeSource>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
     <SymbolPackageFormat>snupkg</SymbolPackageFormat>
-    <Version>1.0.0-alpha2</Version>
+    <Version>1.0.0-alpha3</Version>
   </PropertyGroup>
 
   <ItemGroup>
