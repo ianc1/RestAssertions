@@ -2,10 +2,17 @@
 {
     using System;
 
+    using static Formatters.FormatUtils;
+
     public class RestAssertionException : Exception
     {
         public RestAssertionException(string what, object toBe, object butWas, string additionalInfo)
-            : base($"\r\n\r\nExpected {what} to be:\r\n{toBe}\r\n\r\nbut was:\r\n{butWas}\r\n\r\n{additionalInfo}")
+            : base($"{NewLine}{NewLine}" +
+                   $"Expected {what} to be:{NewLine}" +
+                   $"{toBe}{NewLine}{NewLine}" +
+                   $"but was:{NewLine}" +
+                   $"{butWas}{NewLine}{NewLine}" +
+                   $"{additionalInfo}{NewLine}")
         {
         }
     }
