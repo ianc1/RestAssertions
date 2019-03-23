@@ -4,6 +4,7 @@ namespace ExampleWebApi.Tests
     using System.Net;
     using System.Net.Http;
     using System.Threading.Tasks;
+    using RestAssertions.Assertions;
     using RestAssertions.Utilities;
     using Xunit;
 

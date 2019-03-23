@@ -23,10 +23,5 @@
         {
             return JsonConvert.DeserializeObject<T>(json, Settings);
         }
-
-        public static string Normalize<T>(string json)
-        {
-            return Serialize(Deserialize<T>(json));
-        }
     }
 }
