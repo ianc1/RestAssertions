@@ -4,7 +4,6 @@ namespace ExampleWebApi.Tests
     using System.Net;
     using System.Net.Http;
     using System.Threading.Tasks;
-    using RestAssertions.Assertions;
     using RestAssertions.Utilities;
     using Xunit;
 
@@ -20,7 +19,8 @@ namespace ExampleWebApi.Tests
         {
             var response = await HttpClient.GetAsync($"{UsersEndpoint}/1", ValidBearerToken);
 
-            await response.ShouldBe(HttpStatusCode.OK, new
+            response.ShouldBe(HttpStatusCode.OK);
+            response.ShouldMatchJson(new
             {
                 id = 1,
                 name = "Leanne Graham",
