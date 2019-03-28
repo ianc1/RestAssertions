@@ -47,9 +47,7 @@
 
         private static HttpRequestMessage CreateRequest(HttpClient httpClient, HttpMethod method, string uri, string token)
         {
-            var requestUri = new Uri(uri);
-
-            if (!requestUri.IsAbsoluteUri)
+            if (!Uri.TryCreate(uri, UriKind.Absolute, out var requestUri))
             {
                 requestUri = new Uri(httpClient.BaseAddress, uri);
             }
