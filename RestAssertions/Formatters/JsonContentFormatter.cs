@@ -9,17 +9,7 @@
 
     internal static class JsonContentFormatter
     {
-        public static string Format(object jsonObject)
-        {
-            return Format(JsonUtils.CreateJToken(jsonObject));
-        }
-
-        public static string Format(string jsonString)
-        {
-            return Format(JsonUtils.CreateJToken(jsonString));
-        }
-
-        private static string Format(JToken jToken)
+        public static string Format(JToken jToken)
         {
             Sort(jToken);
 

@@ -85,9 +85,9 @@
         {
             ShouldHaveHeader(HeaderNames.ContentType, $"{MediaTypeNames.Application.Json}; charset=utf-8");
 
-            var actualContent = JsonUtils.Deserialize<dynamic>(content);
+            var expectedJson = JsonUtils.Serialize(expectedContent);
 
-            JsonContentShouldBeEqual(expectedContent, actualContent);
+            JsonContentShouldBeEqual(expectedJson, content);
         }
 
         public int ShouldContainLocationHeaderWithId()
@@ -110,10 +110,13 @@
             throw new RestAssertionException("Expected response to contain a location header with a GUID but did not.");
         }
 
-        private static void JsonContentShouldBeEqual(object expectedContent, object actualContent)
+        private static void JsonContentShouldBeEqual(string expectedJson, string actualJson)
         {
-            var expectedJsonLines = JsonContentFormatter.Format(expectedContent).Split(NewLine);
-            var actualJsonLines = JsonContentFormatter.Format(actualContent).Split(NewLine);
+            var expectedJToken = JsonUtils.CreateJToken(expectedJson);
+            var actualJToken = JsonUtils.CreateJToken(actualJson);
+
+            var expectedJsonLines = JsonContentFormatter.Format(expectedJToken).Split(NewLine);
+            var actualJsonLines = JsonContentFormatter.Format(actualJToken).Split(NewLine);
 
             for (var i = 0; i < actualJsonLines.Length; i++)
             {

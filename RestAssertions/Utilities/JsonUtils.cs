@@ -20,16 +20,6 @@
                 Settings);
         }
 
-        public static T Deserialize<T>(string json)
-        {
-            return JsonConvert.DeserializeObject<T>(json, Settings);
-        }
-
-        public static JToken CreateJToken(object obj)
-        {
-            return JToken.FromObject(obj, JsonSerializer.Create(Settings));
-        }
-
         public static JToken CreateJToken(string json)
         {
             return JToken.Parse(json);
