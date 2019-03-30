@@ -1,9 +1,10 @@
 ﻿namespace RestAssertions.Utilities
 {
     using Newtonsoft.Json;
+    using Newtonsoft.Json.Linq;
     using Newtonsoft.Json.Serialization;
 
-    public static class JsonUtils
+    internal static class JsonUtils
     {
         private static readonly JsonSerializerSettings Settings = new JsonSerializerSettings
         {
@@ -22,6 +23,16 @@
         public static T Deserialize<T>(string json)
         {
             return JsonConvert.DeserializeObject<T>(json, Settings);
+        }
+
+        public static JToken CreateJToken(object obj)
+        {
+            return JToken.FromObject(obj, JsonSerializer.Create(Settings));
+        }
+
+        public static JToken CreateJToken(string json)
+        {
+            return JToken.Parse(json);
         }
     }
 }

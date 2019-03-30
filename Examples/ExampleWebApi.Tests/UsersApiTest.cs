@@ -4,7 +4,9 @@ namespace ExampleWebApi.Tests
     using System.Net;
     using System.Net.Http;
     using System.Threading.Tasks;
-    using RestAssertions.Utilities;
+
+    using RestAssertions;
+
     using Xunit;
 
     public class UsersApiTest

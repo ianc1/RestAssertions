@@ -4,20 +4,19 @@
 
     using Newtonsoft.Json.Linq;
 
-    using Utilities;
-
+    using RestAssertions.Utilities;
     using static FormatUtils;
 
-    public static class JsonContentFormatter
+    internal static class JsonContentFormatter
     {
         public static string Format(object jsonObject)
         {
-            return Format(JToken.FromObject(jsonObject));
+            return Format(JsonUtils.CreateJToken(jsonObject));
         }
 
         public static string Format(string jsonString)
         {
-            return Format(JToken.Parse(jsonString));
+            return Format(JsonUtils.CreateJToken(jsonString));
         }
 
         private static string Format(JToken jToken)

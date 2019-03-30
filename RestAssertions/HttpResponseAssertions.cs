@@ -7,10 +7,12 @@
     using System.Net.Http;
     using System.Net.Mime;
     using System.Threading.Tasks;
-    using Formatters;
+
     using Microsoft.Net.Http.Headers;
-    using Utilities;
-    using static Formatters.FormatUtils;
+
+    using RestAssertions.Formatters;
+    using RestAssertions.Utilities;
+    using static RestAssertions.Formatters.FormatUtils;
 
     public class HttpResponseAssertions
     {

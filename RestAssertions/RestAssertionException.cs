@@ -2,7 +2,7 @@
 {
     using System;
 
-    using static Formatters.FormatUtils;
+    using static RestAssertions.Formatters.FormatUtils;
 
     public class RestAssertionException : Exception
     {

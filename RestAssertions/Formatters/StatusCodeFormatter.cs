@@ -2,7 +2,7 @@
 {
     using System.Net;
 
-    public static class StatusCodeFormatter
+    internal static class StatusCodeFormatter
     {
         public static string Format(HttpStatusCode statusCode)
         {
