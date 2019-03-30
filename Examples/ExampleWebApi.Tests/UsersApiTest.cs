@@ -4,7 +4,6 @@ namespace ExampleWebApi.Tests
     using System.Net;
     using System.Net.Http;
     using System.Threading.Tasks;
-    using Microsoft.Net.Http.Headers;
     using RestAssertions.Utilities;
     using Xunit;
 
@@ -145,10 +144,10 @@ namespace ExampleWebApi.Tests
             var response = await HttpClient.PostAsJsonAsync(UsersEndpoint, user, ValidBearerToken);
 
             response.ShouldBe(HttpStatusCode.Created);
-            response.ShouldHaveHeader(HeaderNames.Location, "http://jsonplaceholder.typicode.com/users/11");
+            var id = response.ShouldContainLocationHeaderWithId();
             response.ShouldMatchJson(new
             {
-                id = 11,
+                id,
                 username = "JonD",
                 name = "Jon Doe",
                 email = "jon.doe@company.org",

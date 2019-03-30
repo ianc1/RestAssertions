@@ -88,6 +88,26 @@
             JsonContentShouldBeEqual(expectedContent, actualContent);
         }
 
+        public int ShouldContainLocationHeaderWithId()
+        {
+            if (int.TryParse(GetLocationHeaderLastSegment(), out var id))
+            {
+                return id;
+            }
+
+            throw new RestAssertionException("Expected response to contain a location header with an integer id but did not.");
+        }
+
+        public Guid ShouldContainLocationHeaderWithGuid()
+        {
+            if (Guid.TryParse(GetLocationHeaderLastSegment(), out var id))
+            {
+                return id;
+            }
+
+            throw new RestAssertionException("Expected response to contain a location header with a GUID but did not.");
+        }
+
         private static void JsonContentShouldBeEqual(object expectedContent, object actualContent)
         {
             var expectedJsonLines = JsonContentFormatter.Format(expectedContent).Split(NewLine);
@@ -118,6 +138,20 @@
         private IEnumerable<string> GetHeaderValues(string name)
         {
             return headers.TryGetValue(name, out var values) ? values : Enumerable.Empty<string>();
+        }
+
+        private string GetLocationHeaderLastSegment()
+        {
+            var location = GetHeaderValues(HeaderNames.Location).FirstOrDefault();
+
+            var id = location?.Split('/').Last();
+
+            if (string.IsNullOrEmpty(id))
+            {
+                throw new RestAssertionException("Expected response to contain a location header but did not.");
+            }
+
+            return id;
         }
     }
 }

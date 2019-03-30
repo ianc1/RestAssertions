@@ -15,5 +15,10 @@
                    $"{additionalInfo}{NewLine}")
         {
         }
+
+        public RestAssertionException(string error)
+            : base(error)
+        {
+        }
     }
 }
