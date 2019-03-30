@@ -5,7 +5,6 @@
     using System.Linq;
     using System.Net;
     using System.Net.Http;
-    using System.Net.Http.Headers;
     using System.Net.Mime;
     using System.Threading.Tasks;
     using Formatters;
@@ -16,21 +15,25 @@
     public class HttpResponseAssertions
     {
         private readonly HttpStatusCode statusCode;
-        private readonly HttpContentHeaders contentHeaders;
+        private readonly Dictionary<string, IEnumerable<string>> headers;
         private readonly string content;
 
-        private HttpResponseAssertions(HttpStatusCode statusCode, HttpContentHeaders contentHeaders, string content)
+        private HttpResponseAssertions(HttpStatusCode statusCode, Dictionary<string, IEnumerable<string>> headers, string content)
         {
             this.statusCode = statusCode;
-            this.contentHeaders = contentHeaders;
+            this.headers = headers;
             this.content = content;
         }
 
         public static async Task<HttpResponseAssertions> Create(HttpResponseMessage httpResponseMessage)
         {
+            var headers = httpResponseMessage.Headers
+                .Concat(httpResponseMessage.Content.Headers)
+                .ToDictionary(k => k.Key, v => v.Value);
+
             return new HttpResponseAssertions(
                 httpResponseMessage.StatusCode,
-                httpResponseMessage.Content.Headers,
+                headers,
                 await httpResponseMessage.Content.ReadAsStringAsync());
         }
 
@@ -41,7 +44,9 @@
                 return;
             }
 
-            var formattedContent = contentHeaders.ContentType.MediaType == MediaTypeNames.Application.Json
+            var contentType = GetHeaderValues(HeaderNames.ContentType).FirstOrDefault();
+
+            var formattedContent = contentType == MediaTypeNames.Application.Json
                 ? JsonContentFormatter.Format(content)
                 : content;
 
@@ -52,38 +57,31 @@
                 $"HTTP response content was:{NewLine}{formattedContent}");
         }
 
-        public void ShouldHaveHeader(string name, string value)
+        public void ShouldHaveHeader(string expectedName, string expectedValue)
         {
-            var actualValues = (contentHeaders.TryGetValues(name, out var values)
-                ? values
-                : Enumerable.Empty<string>()).ToList();
+            var actualValues = GetHeaderValues(expectedName).ToList();
 
-            var actualValuesWithoutCharset = new List<string>();
-
-            foreach (var actualValue in actualValues)
-            {
-                actualValuesWithoutCharset.Add(actualValue.Split(';')[0]);
-            }
-
-            if (actualValuesWithoutCharset.Contains(value, StringComparer.InvariantCultureIgnoreCase))
+            if (actualValues.Contains(expectedValue, StringComparer.InvariantCultureIgnoreCase))
             {
                 return;
             }
 
-            var formattedContent = contentHeaders.ContentType.MediaType == MediaTypeNames.Application.Json
+            var contentType = GetHeaderValues(HeaderNames.ContentType).FirstOrDefault();
+
+            var formattedContent = contentType == MediaTypeNames.Application.Json
                 ? JsonContentFormatter.Format(content)
                 : content;
 
             throw new RestAssertionException(
-                $"HTTP response header \"{name}\"",
-                value,
-                string.Join(", ", actualValuesWithoutCharset),
+                $"HTTP response header \"{expectedName}\"",
+                expectedValue,
+                HeaderFormatter.Format(actualValues),
                 $"HTTP response content was:{NewLine}{formattedContent}");
         }
 
         public void ShouldMatchJson(object expectedContent)
         {
-            ShouldHaveHeader(HeaderNames.ContentType, MediaTypeNames.Application.Json);
+            ShouldHaveHeader(HeaderNames.ContentType, $"{MediaTypeNames.Application.Json}; charset=utf-8");
 
             var actualContent = JsonUtils.Deserialize<dynamic>(content);
 
@@ -115,6 +113,11 @@
                     string.Join(NewLine, actualJsonLines),
                     $"Difference: Line {i + 1}");
             }
+        }
+
+        private IEnumerable<string> GetHeaderValues(string name)
+        {
+            return headers.TryGetValue(name, out var values) ? values : Enumerable.Empty<string>();
         }
     }
 }
