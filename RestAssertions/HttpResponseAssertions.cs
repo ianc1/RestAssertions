@@ -86,8 +86,9 @@
             ShouldHaveHeader(HeaderNames.ContentType, $"{MediaTypeNames.Application.Json}; charset=utf-8");
 
             var expectedJson = JsonUtils.Serialize(expectedContent);
+            var actualJson = JsonUtils.Normalize(content);
 
-            JsonContentShouldBeEqual(expectedJson, content);
+            JsonContentShouldBeEqual(expectedJson, actualJson);
         }
 
         public int ShouldContainLocationHeaderWithId()
