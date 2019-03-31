@@ -12,12 +12,13 @@
                    $"{toBe}{NewLine}{NewLine}" +
                    $"but was:{NewLine}" +
                    $"{butWas}{NewLine}{NewLine}" +
-                   $"{additionalInfo}{NewLine}")
+                   $"Additional information{NewLine}{NewLine}{additionalInfo}{NewLine}{NewLine}")
         {
         }
 
-        public RestAssertionException(string error)
-            : base(error)
+        public RestAssertionException(string error, string additionalInfo)
+            : base($"{error}{NewLine}{NewLine}" +
+                   $"Additional information{NewLine}{NewLine}{additionalInfo}{NewLine}{NewLine}")
         {
         }
     }

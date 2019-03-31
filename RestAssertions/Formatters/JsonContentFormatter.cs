@@ -9,8 +9,10 @@
 
     internal static class JsonContentFormatter
     {
-        public static string Format(JToken jToken)
+        public static string Format(string json)
         {
+            var jToken = JsonUtils.CreateJToken(json);
+
             Sort(jToken);
 
             string prettyJson = JsonUtils.Serialize(jToken);

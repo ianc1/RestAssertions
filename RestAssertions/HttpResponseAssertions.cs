@@ -46,17 +46,11 @@
                 return;
             }
 
-            var contentType = GetHeaderValues(HeaderNames.ContentType).FirstOrDefault();
-
-            var formattedContent = contentType == MediaTypeNames.Application.Json
-                ? JsonContentFormatter.Format(content)
-                : content;
-
             throw new RestAssertionException(
                 "HTTP response code",
                 StatusCodeFormatter.Format(expectedStatusCode),
                 StatusCodeFormatter.Format(statusCode),
-                $"HTTP response content was:{NewLine}{formattedContent}");
+                HttpResponseFormatter.Format(statusCode, headers, content));
         }
 
         public void ShouldHaveHeader(string expectedName, string expectedValue)
@@ -68,17 +62,11 @@
                 return;
             }
 
-            var contentType = GetHeaderValues(HeaderNames.ContentType).FirstOrDefault();
-
-            var formattedContent = contentType == MediaTypeNames.Application.Json
-                ? JsonContentFormatter.Format(content)
-                : content;
-
             throw new RestAssertionException(
                 $"HTTP response header \"{expectedName}\"",
                 expectedValue,
                 HeaderFormatter.Format(actualValues),
-                $"HTTP response content was:{NewLine}{formattedContent}");
+                HttpResponseFormatter.Format(statusCode, headers, content));
         }
 
         public void ShouldMatchJson(object expectedContent)
@@ -98,7 +86,9 @@
                 return id;
             }
 
-            throw new RestAssertionException("Expected response to contain a location header with an integer id but did not.");
+            throw new RestAssertionException(
+                "Expected response to contain a location header with an integer id but did not.",
+                HttpResponseFormatter.Format(statusCode, headers, content));
         }
 
         public Guid ShouldContainLocationHeaderWithGuid()
@@ -108,16 +98,15 @@
                 return id;
             }
 
-            throw new RestAssertionException("Expected response to contain a location header with a GUID but did not.");
+            throw new RestAssertionException(
+                "Expected response to contain a location header with a GUID but did not.",
+                HttpResponseFormatter.Format(statusCode, headers, content));
         }
 
-        private static void JsonContentShouldBeEqual(string expectedJson, string actualJson)
+        private void JsonContentShouldBeEqual(string expectedJson, string actualJson)
         {
-            var expectedJToken = JsonUtils.CreateJToken(expectedJson);
-            var actualJToken = JsonUtils.CreateJToken(actualJson);
-
-            var expectedJsonLines = JsonContentFormatter.Format(expectedJToken).Split(NewLine);
-            var actualJsonLines = JsonContentFormatter.Format(actualJToken).Split(NewLine);
+            var expectedJsonLines = JsonContentFormatter.Format(expectedJson).Split(NewLine);
+            var actualJsonLines = JsonContentFormatter.Format(actualJson).Split(NewLine);
 
             for (var i = 0; i < actualJsonLines.Length; i++)
             {
@@ -137,7 +126,7 @@
                     "HTTP response content",
                     string.Join(NewLine, expectedJsonLines),
                     string.Join(NewLine, actualJsonLines),
-                    $"Difference: Line {i + 1}");
+                    $"Difference:{NewLine}{Indent}Line {i + 1}{NewLine}{NewLine}{HttpResponseFormatter.Format(statusCode, headers, content)}");
             }
         }
 
@@ -154,7 +143,9 @@
 
             if (string.IsNullOrEmpty(id))
             {
-                throw new RestAssertionException("Expected response to contain a location header but did not.");
+                throw new RestAssertionException(
+                    "Expected response to contain a location header but did not.",
+                    HttpResponseFormatter.Format(statusCode, headers, content));
             }
 
             return id;
