@@ -11,14 +11,14 @@
 
     public static class HttpClientExtensions
     {
-        public static async Task<HttpResponseAssertions> GetAsync(this HttpClient httpClient, string uri, string token)
+        public static async Task<HttpResponseAssertions> TestGet(this HttpClient httpClient, string uri, string token)
         {
             var response = await httpClient.SendAsync(CreateRequest(httpClient, HttpMethod.Get, uri, token));
 
             return await HttpResponseAssertions.Create(response);
         }
 
-        public static async Task<HttpResponseAssertions> PostAsJsonAsync<T>(this HttpClient httpClient, string uri, T model, string token)
+        public static async Task<HttpResponseAssertions> TestPost(this HttpClient httpClient, string uri, object model, string token)
         {
             var request = CreateRequest(httpClient, HttpMethod.Post, uri, token);
 
@@ -29,7 +29,7 @@
             return await HttpResponseAssertions.Create(response);
         }
 
-        public static async Task<HttpResponseAssertions> PutAsJsonAsync<T>(this HttpClient httpClient, string uri, T model, string token)
+        public static async Task<HttpResponseAssertions> TestPut(this HttpClient httpClient, string uri, object model, string token)
         {
             var request = CreateRequest(httpClient, HttpMethod.Put, uri, token);
 
@@ -40,7 +40,7 @@
             return await HttpResponseAssertions.Create(response);
         }
 
-        public static async Task<HttpResponseAssertions> DeleteAsync(this HttpClient httpClient, string uri, string token)
+        public static async Task<HttpResponseAssertions> TestDelete(this HttpClient httpClient, string uri, string token)
         {
             var response = await httpClient.SendAsync(CreateRequest(httpClient, HttpMethod.Delete, uri, token));
 
@@ -61,9 +61,12 @@
             return request;
         }
 
-        private static void AddJsonContent<T>(HttpRequestMessage request, T model)
+        private static void AddJsonContent(HttpRequestMessage request, object model)
         {
-            request.Content = new StringContent(JsonUtils.Serialize(model), Encoding.UTF8, MediaTypeNames.Application.Json);
+            request.Content = new StringContent(
+                JsonUtils.Serialize(model),
+                Encoding.UTF8,
+                MediaTypeNames.Application.Json);
         }
     }
 }

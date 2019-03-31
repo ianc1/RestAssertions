@@ -5,11 +5,13 @@ namespace ExampleWebApi.Tests
     using System.Net.Http;
     using System.Threading.Tasks;
 
+    using ExampleWebApi.Tests.Models;
+
     using RestAssertions;
 
     using Xunit;
 
-    public class UsersApiTest
+    public class UsersApiTests
     {
         private const string UsersEndpoint = "https://jsonplaceholder.typicode.com/users";
         private const string ValidBearerToken = "FAKE_TOKEN";
@@ -19,7 +21,7 @@ namespace ExampleWebApi.Tests
         [Fact]
         public async Task GetUser_should_return_200_ok_and_the_requested_user()
         {
-            var response = await HttpClient.GetAsync($"{UsersEndpoint}/1", ValidBearerToken);
+            HttpResponseAssertions response = await HttpClient.TestGet($"{UsersEndpoint}/1", ValidBearerToken);
 
             response.ShouldBe(HttpStatusCode.OK);
             response.ShouldMatchJson(new
@@ -54,7 +56,7 @@ namespace ExampleWebApi.Tests
         [Fact]
         public async Task GetUser_should_return_404_not_found_when_the_requested_user_does_not_exist()
         {
-            var response = await HttpClient.GetAsync($"{UsersEndpoint}/100", ValidBearerToken);
+            var response = await HttpClient.TestGet($"{UsersEndpoint}/100", ValidBearerToken);
 
             response.ShouldBe(HttpStatusCode.NotFound);
         }
@@ -62,7 +64,7 @@ namespace ExampleWebApi.Tests
         [Fact]
         public async Task GetUsers_should_return_200_ok_and_a_list_of_users()
         {
-            var response = await HttpClient.GetAsync($"{UsersEndpoint}?username=Bret&username=Antonette", ValidBearerToken);
+            var response = await HttpClient.TestGet($"{UsersEndpoint}?username=Bret&username=Antonette", ValidBearerToken);
 
             response.ShouldBe(HttpStatusCode.OK);
             response.ShouldMatchJson(new object[]
@@ -127,7 +129,7 @@ namespace ExampleWebApi.Tests
         [Fact]
         public async Task GetUsers_should_return_200_ok_and_an_empty_list_when_no_matching_users_are_found()
         {
-            var response = await HttpClient.GetAsync($"{UsersEndpoint}?username=Scott", ValidBearerToken);
+            var response = await HttpClient.TestGet($"{UsersEndpoint}?username=Scott", ValidBearerToken);
 
             response.ShouldBe(HttpStatusCode.OK);
             response.ShouldMatchJson(new object[] { });
@@ -136,38 +138,32 @@ namespace ExampleWebApi.Tests
         [Fact]
         public async Task CreateUser_should_return_201_created_and_the_created_user()
         {
-            var user = new
+            var user = new User
             {
-                username = "JonD",
-                name = "Jon Doe",
-                email = "jon.doe@company.org",
+                Name = "Jon Doe",
+                Username = "JonD",
+                EMail = "jon.doe@company.org",
             };
 
-            var response = await HttpClient.PostAsJsonAsync(UsersEndpoint, user, ValidBearerToken);
+            var response = await HttpClient.TestPost(UsersEndpoint, user, ValidBearerToken);
 
             response.ShouldBe(HttpStatusCode.Created);
-            var id = response.ShouldContainLocationHeaderWithId();
-            response.ShouldMatchJson(new
-            {
-                id,
-                username = "JonD",
-                name = "Jon Doe",
-                email = "jon.doe@company.org",
-            });
+            user.Id = response.ShouldContainLocationHeaderWithId();
+            response.ShouldMatchJson(user);
         }
 
         [Fact]
         public async Task UpdateUser_should_return_200_ok_and_the_updated_user()
         {
-            var user = new
+            var user = new User
             {
-                id = 1,
-                username = "JonD",
-                name = "Jon Doe",
-                email = "jon.doe@company.org",
+                Id = 1,
+                Username = "JonD",
+                Name = "Jon Doe",
+                EMail = "jon.doe@company.org",
             };
 
-            var response = await HttpClient.PutAsJsonAsync($"{UsersEndpoint}/1", user, ValidBearerToken);
+            var response = await HttpClient.TestPut($"{UsersEndpoint}/1", user, ValidBearerToken);
 
             response.ShouldBe(HttpStatusCode.OK);
             response.ShouldMatchJson(user);
@@ -176,7 +172,7 @@ namespace ExampleWebApi.Tests
         [Fact]
         public async Task DeleteUser_should_return_200_ok_when_a_user_is_deleted()
         {
-            var response = await HttpClient.DeleteAsync($"{UsersEndpoint}/1", ValidBearerToken);
+            var response = await HttpClient.TestDelete($"{UsersEndpoint}/1", ValidBearerToken);
 
             response.ShouldBe(HttpStatusCode.OK); // Ideally the API would return 204 no content.
             response.ShouldMatchJson(new { });
