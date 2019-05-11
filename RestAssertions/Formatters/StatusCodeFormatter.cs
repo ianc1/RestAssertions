@@ -1,6 +1,7 @@
 ﻿namespace RestAssertions.Formatters
 {
     using System.Net;
+    using Microsoft.AspNetCore.WebUtilities;
 
     using static FormatUtils;
 
@@ -8,7 +9,9 @@
     {
         public static string Format(HttpStatusCode statusCode)
         {
-            return $"{Indent}{(int)statusCode} {statusCode}";
+            var message = ReasonPhrases.GetReasonPhrase((int)statusCode);
+
+            return $"{Indent}{(int)statusCode} {message}";
         }
     }
 }

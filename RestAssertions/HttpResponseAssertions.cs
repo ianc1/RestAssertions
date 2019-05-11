@@ -10,6 +10,8 @@
 
     using Microsoft.Net.Http.Headers;
 
+    using Newtonsoft.Json.Linq;
+
     using RestAssertions.Formatters;
     using RestAssertions.Utilities;
     using static RestAssertions.Formatters.FormatUtils;
@@ -101,6 +103,36 @@
             throw new RestAssertionException(
                 "Expected response to contain a location header with a GUID but did not.",
                 HttpResponseFormatter.Format(statusCode, headers, content));
+        }
+
+        public void ShouldContainJsonProperty<T>(string propertyPath, T expectedValue)
+        {
+            JToken jToken;
+
+            try
+            {
+                jToken = JTokenUtils.GetProperty(content, propertyPath);
+            }
+            catch (Exception e)
+            {
+                throw new RestAssertionException(
+                    $"JSON response with property \"{propertyPath}\"",
+                    expectedValue,
+                    "not found",
+                    $"{e.Message}{NewLine}{NewLine}" + HttpResponseFormatter.Format(statusCode, headers, content));
+            }
+
+            var actualJson = JsonContentFormatter.Format(JsonUtils.Serialize(jToken), includeLineNumbers: false);
+            var expectedJson = JsonContentFormatter.Format(JsonUtils.Serialize(expectedValue), includeLineNumbers: false);
+
+            if (!actualJson.Equals(expectedJson))
+            {
+                throw new RestAssertionException(
+                    $"HTTP response property \"{propertyPath}\"",
+                    expectedJson,
+                    actualJson,
+                    HttpResponseFormatter.Format(statusCode, headers, content));
+            }
         }
 
         private void JsonContentShouldBeEqual(string expectedJson, string actualJson)

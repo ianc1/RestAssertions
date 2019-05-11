@@ -17,7 +17,8 @@
         }
 
         public RestAssertionException(string error, string additionalInfo)
-            : base($"{error}{NewLine}{NewLine}" +
+            : base($"{NewLine}{NewLine}" +
+                   $"{error}{NewLine}{NewLine}" +
                    $"Additional information{NewLine}{NewLine}{additionalInfo}{NewLine}{NewLine}")
         {
         }

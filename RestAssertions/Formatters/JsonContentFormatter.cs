@@ -9,15 +9,20 @@
 
     internal static class JsonContentFormatter
     {
-        public static string Format(string json)
+        public static string Format(string json, bool includeLineNumbers = true)
         {
-            var jToken = JsonUtils.CreateJToken(json);
+            var jToken = JTokenUtils.CreateJToken(json);
 
             Sort(jToken);
 
             string prettyJson = JsonUtils.Serialize(jToken);
 
-            return string.Join(NewLine, prettyJson.Split(NewLine).Select((line, index) => $"{index + 1, 6}:  {line}"));
+            if (!includeLineNumbers)
+            {
+                return prettyJson;
+            }
+
+            return string.Join(NewLine, prettyJson.Split(NewLine).Select((line, index) => $"{index + 1,6}:  {line}"));
         }
 
         private static void Sort(JToken jToken)

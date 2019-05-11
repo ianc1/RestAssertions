@@ -1,5 +1,5 @@
 # RestAssertions
-A collection of HTTP response assertions to simplify the testing of REST endpoints.
+A collection of HTTP response assertions to simplify the testing of REST endpoints. `RestAssertions` provides clean and easy to read tests with rich failure messages so you'll never be left wondering why your tests have failed.
 
 Four `HttpClient` extension methods are provided to test your endpoints:
 * `TestGet(string url, string bearerToken)`
@@ -10,6 +10,7 @@ Four `HttpClient` extension methods are provided to test your endpoints:
 These extension methods return an instance of `HttpResponseAssertions` which provides the following assertions:
 * `ShouldBe(HttpStatusCode expectedStatusCode)`
 * `ShouldMatchJson(object expectedContent)`
+* `ShouldContainJsonProperty(string propertyPath, object expectedPropertyValue)`
 * `ShouldHaveHeader(String expectedName, String expectedValue)`
 * `int ShouldContainLocationHeaderWithId()`
 * `Guid ShouldContainLocationHeaderWithGuid()`
@@ -86,3 +87,8 @@ Content:
      5:    "username": "Bret"
      6:  }
 ```
+
+## Browse the examples
+
+- [Example users api](Examples/ExampleWebApi.Tests/UsersApiTests.cs)
+

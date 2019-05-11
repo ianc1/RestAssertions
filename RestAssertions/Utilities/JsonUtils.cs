@@ -16,20 +16,17 @@
 
         public static string Serialize(object value)
         {
-            return JsonConvert.SerializeObject(
-                value,
-                Formatting.Indented,
-                Settings);
+            return JsonConvert.SerializeObject(value, Formatting.Indented, Settings);
+        }
+
+        public static T Deserialize<T>(string json)
+        {
+            return JsonConvert.DeserializeObject<T>(json, Settings);
         }
 
         public static string Normalize(string json)
         {
             return Serialize(ToDictionary(JToken.Parse(json)));
-        }
-
-        public static JToken CreateJToken(string json)
-        {
-            return JToken.Parse(json);
         }
 
         private static object ToDictionary(JToken token)

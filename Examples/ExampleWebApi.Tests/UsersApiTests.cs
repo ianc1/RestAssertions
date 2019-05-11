@@ -54,6 +54,16 @@ namespace ExampleWebApi.Tests
         }
 
         [Fact]
+        public async Task GetUser_should_return_200_OK_and_the_id_and_city_properties()
+        {
+            HttpResponseAssertions response = await HttpClient.TestGet($"{UsersEndpoint}/1", ValidBearerToken);
+
+            response.ShouldBe(HttpStatusCode.OK);
+            response.ShouldContainJsonProperty("id", 1);
+            response.ShouldContainJsonProperty("address.city", "Gwenborough");
+        }
+
+        [Fact]
         public async Task GetUser_should_return_404_not_found_when_the_requested_user_does_not_exist()
         {
             var response = await HttpClient.TestGet($"{UsersEndpoint}/100", ValidBearerToken);
@@ -124,6 +134,18 @@ namespace ExampleWebApi.Tests
                     }
                 }
             });
+        }
+
+        [Fact]
+        public async Task GetUsers_should_return_200_ok_and_the_id_and_city_properties()
+        {
+            var response = await HttpClient.TestGet($"{UsersEndpoint}?username=Bret&username=Antonette", ValidBearerToken);
+
+            response.ShouldBe(HttpStatusCode.OK);
+            response.ShouldContainJsonProperty("[0].id", 1);
+            response.ShouldContainJsonProperty("[0].company.name", "Romaguera-Crona");
+            response.ShouldContainJsonProperty("[1].id", 2);
+            response.ShouldContainJsonProperty("[1].company.name", "Deckow-Crist");
         }
 
         [Fact]

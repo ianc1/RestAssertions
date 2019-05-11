@@ -21,7 +21,7 @@
         {
             var orderedHeaders = new SortedDictionary<string, IEnumerable<string>>(headers);
 
-            return string.Join(NewLine, orderedHeaders.OrderBy(header => header.Key).Select((header, index) => $"{index + 1, 6}:  {header.Key}: {string.Join(", ", header.Value)}"));
+            return string.Join(NewLine, orderedHeaders.OrderBy(header => header.Key).Select((header, index) => $"{index + 1,6}:  {header.Key}: {string.Join(", ", header.Value)}"));
         }
     }
 }
