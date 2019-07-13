@@ -21,7 +21,7 @@ namespace ExampleWebApi.Tests
         [Fact]
         public async Task GetUser_should_return_200_ok_and_the_requested_user()
         {
-            HttpResponseAssertions response = await HttpClient.TestGet($"{UsersEndpoint}/1", ValidBearerToken);
+            var response = await HttpClient.TestGet($"{UsersEndpoint}/1", ValidBearerToken);
 
             response.ShouldBe(HttpStatusCode.OK);
             response.ShouldMatchJson(new
@@ -56,7 +56,7 @@ namespace ExampleWebApi.Tests
         [Fact]
         public async Task GetUser_should_return_200_OK_and_the_id_and_city_properties()
         {
-            HttpResponseAssertions response = await HttpClient.TestGet($"{UsersEndpoint}/1", ValidBearerToken);
+            var response = await HttpClient.TestGet($"{UsersEndpoint}/1", ValidBearerToken);
 
             response.ShouldBe(HttpStatusCode.OK);
             response.ShouldContainJsonProperty("id", 1);
@@ -164,7 +164,7 @@ namespace ExampleWebApi.Tests
             {
                 Name = "Jon Doe",
                 Username = "JonD",
-                EMail = "jon.doe@company.org",
+                Email = "jon.doe@company.org",
             };
 
             var response = await HttpClient.TestPost(UsersEndpoint, user, ValidBearerToken);
@@ -175,6 +175,22 @@ namespace ExampleWebApi.Tests
         }
 
         [Fact]
+        public async Task CreateUser_should_return_201_created_and_contain_the_email_address()
+        {
+            var user = new User
+            {
+                Name = "Jon Doe",
+                Username = "JonD",
+                Email = "jon.doe@company.org",
+            };
+
+            var response = await HttpClient.TestPost(UsersEndpoint, user, ValidBearerToken);
+
+            response.ShouldBe(HttpStatusCode.Created);
+            response.ShouldContainText("jon.doe@company.org");
+        }
+
+        [Fact]
         public async Task UpdateUser_should_return_200_ok_and_the_updated_user()
         {
             var user = new User
@@ -182,7 +198,7 @@ namespace ExampleWebApi.Tests
                 Id = 1,
                 Username = "JonD",
                 Name = "Jon Doe",
-                EMail = "jon.doe@company.org",
+                Email = "jon.doe@company.org",
             };
 
             var response = await HttpClient.TestPut($"{UsersEndpoint}/1", user, ValidBearerToken);

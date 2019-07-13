@@ -8,6 +8,6 @@
 
         public string Username { get; set; }
 
-        public string EMail { get; set; }
+        public string Email { get; set; }
     }
 }

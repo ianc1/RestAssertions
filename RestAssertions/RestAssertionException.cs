@@ -6,12 +6,16 @@
 
     public class RestAssertionException : Exception
     {
-        public RestAssertionException(string what, object toBe, object butWas, string additionalInfo)
+        public const string ToBe = "to be";
+
+        public const string ToContain = "to contain";
+
+        public RestAssertionException(string what, object expectedValue, object actualValue, string additionalInfo, string expectationType = ToBe)
             : base($"{NewLine}{NewLine}" +
-                   $"Expected {what} to be:{NewLine}" +
-                   $"{toBe}{NewLine}{NewLine}" +
+                   $"Expected {what} {expectationType}:{NewLine}" +
+                   $"{expectedValue}{NewLine}{NewLine}" +
                    $"but was:{NewLine}" +
-                   $"{butWas}{NewLine}{NewLine}" +
+                   $"{actualValue}{NewLine}{NewLine}" +
                    $"Additional information{NewLine}{NewLine}{additionalInfo}{NewLine}{NewLine}")
         {
         }

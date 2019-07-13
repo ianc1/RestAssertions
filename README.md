@@ -11,6 +11,7 @@ These extension methods return an instance of `HttpResponseAssertions` which pro
 * `ShouldBe(HttpStatusCode expectedStatusCode)`
 * `ShouldMatchJson(object expectedContent)`
 * `ShouldContainJsonProperty(string propertyPath, object expectedPropertyValue)`
+* `ShouldContainText(string expectedText)`
 * `ShouldHaveHeader(String expectedName, String expectedValue)`
 * `int ShouldContainLocationHeaderWithId()`
 * `Guid ShouldContainLocationHeaderWithGuid()`

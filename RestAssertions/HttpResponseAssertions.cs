@@ -135,6 +135,21 @@
             }
         }
 
+        public void ShouldContainText(string expectedText)
+        {
+            if (content != null && content.Contains(expectedText, StringComparison.Ordinal))
+            {
+                return;
+            }
+
+            throw new RestAssertionException(
+                "HTTP response content",
+                expectedText,
+                content,
+                HttpResponseFormatter.Format(statusCode, headers, content),
+                expectationType: RestAssertionException.ToContain);
+        }
+
         private void JsonContentShouldBeEqual(string expectedJson, string actualJson)
         {
             var expectedJsonLines = JsonContentFormatter.Format(expectedJson).Split(NewLine);
