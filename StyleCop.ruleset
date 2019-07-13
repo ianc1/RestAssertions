@@ -1,18 +1,26 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <RuleSet Name="StyleCopRules" Description="StyleCopRules custom ruleset" ToolsVersion="15.0">
   <IncludeAll Action="Warning" />
-    <Rules AnalyzerId="StyleCop.Analyzers" RuleNamespace="StyleCop.Analyzers">
-    <!-- SA0001: XmlCommentAnalysisDisabled -->
-    <Rule Id="SA0001" Action="None" />
+  <Rules AnalyzerId="StyleCop.Analyzers" RuleNamespace="StyleCop.Analyzers">
     <!-- SA0001: XmlCommentAnalysisDisabled -->
     <Rule Id="SA0001" Action="None" />
     <!-- SA1101: PrefixLocalCallsWithThis -->
     <Rule Id="SA1101" Action="None" />
     <!-- SA1600: ElementsMustBeDocumented -->
     <Rule Id="SA1600" Action="None" />
+    <!-- SA1609 : PropertyDocumentationMustHaveValue -->
+    <Rule Id="SA1609" Action="None" />
+    <!-- SA1629: DocumentationTextMustEndWithAPeriod -->
+    <Rule Id="SA1629" Action="None" />
+    <!-- SA1639 : FileHeaderMustHaveSummary -->
+    <Rule Id="SA1639" Action="None" />
+    <!-- SX1309 : FieldNamesMustBeginWithUnderscore -->
+    <Rule Id="SX1309" Action="None" />
+    <!-- SX1309S : StaticFieldNamesMustBeginWithUnderscore -->
+    <Rule Id="SX1309S" Action="None" />
     <!-- SA1633: File must have header -->
     <Rule Id="SA1633" Action="None" />
-    <!-- SA1652: Enable XML Documentation -->
+    <!--SA1652: Enable XML documentation output -->
     <Rule Id="SA1652" Action="None" />
   </Rules>
 </RuleSet>

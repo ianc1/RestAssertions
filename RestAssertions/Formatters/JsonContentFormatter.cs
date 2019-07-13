@@ -11,11 +11,11 @@
     {
         public static string Format(string json, bool includeLineNumbers = true)
         {
-            var jToken = JTokenUtils.CreateJToken(json);
+            var jsonToken = JsonTokenUtils.CreateJToken(json);
 
-            Sort(jToken);
+            Sort(jsonToken);
 
-            string prettyJson = JsonUtils.Serialize(jToken);
+            string prettyJson = JsonUtils.Serialize(jsonToken);
 
             if (!includeLineNumbers)
             {
@@ -25,22 +25,22 @@
             return string.Join(NewLine, prettyJson.Split(NewLine).Select((line, index) => $"{index + 1,6}:  {line}"));
         }
 
-        private static void Sort(JToken jToken)
+        private static void Sort(JToken jsonToken)
         {
-            if (jToken is JObject)
+            if (jsonToken is JObject)
             {
-                Sort((JObject)jToken);
+                Sort((JObject)jsonToken);
             }
 
-            if (jToken is JArray)
+            if (jsonToken is JArray)
             {
-                Sort((JArray)jToken);
+                Sort((JArray)jsonToken);
             }
         }
 
-        private static void Sort(JObject jObject)
+        private static void Sort(JObject jsonObject)
         {
-            var props = jObject.Properties().ToList();
+            var props = jsonObject.Properties().ToList();
 
             foreach (var prop in props)
             {
@@ -49,18 +49,18 @@
 
             foreach (var prop in props.OrderBy(p => p.Name))
             {
-                jObject.Add(prop);
+                jsonObject.Add(prop);
                 Sort(prop.Value);
             }
         }
 
-        private static void Sort(JArray jArray)
+        private static void Sort(JArray jsonArray)
         {
-            var iCount = jArray.Count;
+            var jsonArrayCount = jsonArray.Count;
 
-            for (var iIterator = 0; iIterator < iCount; iIterator++)
+            for (var index = 0; index < jsonArrayCount; index++)
             {
-                Sort(jArray[iIterator]);
+                Sort(jsonArray[index]);
             }
         }
     }

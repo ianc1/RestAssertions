@@ -12,6 +12,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		LICENSE = LICENSE
 		README.md = README.md
 		StyleCop.ruleset = StyleCop.ruleset
+		RestAssertions.sln.DotSettings = RestAssertions.sln.DotSettings
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Examples", "Examples", "{5E810721-FBEA-4D59-80A8-B436C8351A6E}"

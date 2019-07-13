@@ -107,11 +107,11 @@
 
         public void ShouldContainJsonProperty<T>(string propertyPath, T expectedValue)
         {
-            JToken jToken;
+            JToken jsonToken;
 
             try
             {
-                jToken = JTokenUtils.GetProperty(content, propertyPath);
+                jsonToken = JsonTokenUtils.GetProperty(content, propertyPath);
             }
             catch (Exception e)
             {
@@ -122,7 +122,7 @@
                     $"{e.Message}{NewLine}{NewLine}" + HttpResponseFormatter.Format(statusCode, headers, content));
             }
 
-            var actualJson = JsonContentFormatter.Format(JsonUtils.Serialize(jToken), includeLineNumbers: false);
+            var actualJson = JsonContentFormatter.Format(JsonUtils.Serialize(jsonToken), includeLineNumbers: false);
             var expectedJson = JsonContentFormatter.Format(JsonUtils.Serialize(expectedValue), includeLineNumbers: false);
 
             if (!actualJson.Equals(expectedJson))

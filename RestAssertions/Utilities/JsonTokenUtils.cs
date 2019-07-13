@@ -5,7 +5,7 @@
 
     using Newtonsoft.Json.Linq;
 
-    public class JTokenUtils
+    public class JsonTokenUtils
     {
         public static JToken CreateJToken(string json)
         {
@@ -14,14 +14,14 @@
 
         public static JToken GetProperty(string json, string propertyPath)
         {
-            var jTokenUtils = new JTokenUtils();
+            var jsonTokenUtils = new JsonTokenUtils();
 
-            return jTokenUtils.GetChildJToken(json, propertyPath);
+            return jsonTokenUtils.GetChildJToken(json, propertyPath);
         }
 
         private JToken GetChildJToken(string json, string childPath)
         {
-            var jToken = CreateJToken(json);
+            var jsonToken = CreateJToken(json);
 
             var regex = new Regex("(?<property>.*?)\\[(?<arrayIndex>[0-9]+)\\]");
 
@@ -41,21 +41,21 @@
 
                 if (!string.IsNullOrEmpty(property))
                 {
-                    (path, jToken) = GetJToken(path, node, jToken);
+                    (path, jsonToken) = GetJToken(path, node, jsonToken);
                 }
 
                 if (arrayIndex >= 0)
                 {
-                    (path, jToken) = GetArrayJToken(path, arrayIndex, jToken);
+                    (path, jsonToken) = GetArrayJToken(path, arrayIndex, jsonToken);
                 }
             }
 
-            return jToken;
+            return jsonToken;
         }
 
-        private void ExpectJTokenType(string path, JTokenType expectedType, JToken jToken)
+        private void ExpectJTokenType(string path, JTokenType expectedType, JToken jsonToken)
         {
-            if (jToken.Type != expectedType)
+            if (jsonToken.Type != expectedType)
             {
                 ThrowException(path, $"was not of type '{expectedType}'");
             }
@@ -68,32 +68,32 @@
             throw new Exception($"{tokenPathMessage} {error}");
         }
 
-        private (string path, JToken jToken) GetJToken(string path, string node, JToken jToken)
+        private (string path, JToken jToken) GetJToken(string path, string node, JToken jsonToken)
         {
-            ExpectJTokenType(path, JTokenType.Object, jToken);
+            ExpectJTokenType(path, JTokenType.Object, jsonToken);
 
-            if (!((JObject)jToken).TryGetValue(node, out var jTokenChild))
+            if (!((JObject)jsonToken).TryGetValue(node, out var jsonTokenChild))
             {
                 ThrowException(path, $"did not have property '{node}'");
             }
 
             path += path == string.Empty ? node : $".{node}";
 
-            return (path, jTokenChild);
+            return (path, jsonTokenChild);
         }
 
-        private (string path, JToken jToken) GetArrayJToken(string path, int arrayIndex, JToken jToken)
+        private (string path, JToken jToken) GetArrayJToken(string path, int arrayIndex, JToken jsonToken)
         {
-            ExpectJTokenType(path, JTokenType.Array, jToken);
+            ExpectJTokenType(path, JTokenType.Array, jsonToken);
 
             path += $"[{arrayIndex}]";
 
-            if (arrayIndex >= ((JArray)jToken).Count)
+            if (arrayIndex >= ((JArray)jsonToken).Count)
             {
                 throw new Exception($"Expected JSON array index {arrayIndex}");
             }
 
-            return (path, ((JArray)jToken)[arrayIndex]);
+            return (path, ((JArray)jsonToken)[arrayIndex]);
         }
     }
 }

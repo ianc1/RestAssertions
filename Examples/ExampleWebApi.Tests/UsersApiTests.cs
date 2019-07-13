@@ -49,7 +49,7 @@ namespace ExampleWebApi.Tests
                     name = "Romaguera-Crona",
                     catchPhrase = "Multi-layered client-server neural-net",
                     bs = "harness real-time e-markets",
-                }
+                },
             });
         }
 
@@ -104,7 +104,7 @@ namespace ExampleWebApi.Tests
                         name = "Romaguera-Crona",
                         catchPhrase = "Multi-layered client-server neural-net",
                         bs = "harness real-time e-markets",
-                    }
+                    },
                 },
                 new
                 {
@@ -131,8 +131,8 @@ namespace ExampleWebApi.Tests
                         name = "Deckow-Crist",
                         catchPhrase = "Proactive didactic contingency",
                         bs = "synergize scalable supply-chains",
-                    }
-                }
+                    },
+                },
             });
         }
 
